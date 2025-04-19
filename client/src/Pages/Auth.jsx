@@ -78,7 +78,7 @@ const Auth = () => {
     if (validatelogin()) {
       try {
         const res = await apiclient.post(LOGIN_ROUTES, { email, password }, { withCredentials: true });
-        console.log('API Response:', res.data); // Log the response to see its structure
+        //console.log('API Response:', res.data); // Log the response to see its structure
   
         if (res.data.user.id) { // Change _id to id
           // 

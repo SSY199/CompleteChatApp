@@ -63,7 +63,7 @@ const ProfileInfo = () => {
           <span className="text-white font-semibold text-lg">
             {userInfo.firstName || userInfo.email}
           </span>
-          <span className="text-gray-400 text-sm">Online</span>
+          {/* <span className="text-gray-400 text-sm">Online</span> */}
         </div>
       </div>
       <div className="flex gap-5">

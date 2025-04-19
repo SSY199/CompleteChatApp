@@ -5,6 +5,7 @@ import mongoose, { mongo } from "mongoose";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.route.js";
 import contactsRoutes from "./routes/contact.route.js";
+import setupSocket from "./socket.js";
 
 dotenv.config();
 
@@ -33,6 +34,8 @@ const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+setupSocket(server);
+
 mongoose
   .connect(databaseURL)
   .then(() => {
@@ -41,25 +44,3 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
-
-
-
-  // (
-  //   <div
-  //     className="flex-1 flex flex-col justify-center items-center bg-[#181920] text-opacity-80 text-white transition-all duration-300"
-  //     aria-label="Empty Container"
-  //   >
-  //     <Lottie
-  //       isClickToPauseDisabled={true}
-  //       options={animationDefaultOptions}
-  //       height={150}
-  //       width={150}
-  //     />
-  //     <div className="flex flex-col gap-2 items-center justify-center mt-5 lg:text-2xl text-xl text-center">
-  //       <h2 className="poppins-medium">
-  //         Hi<span className="text-purple-500">!</span> Search new
-  //         <span className="text-purple-500"> Contacts</span>
-  //       </h2>
-  //     </div>
-  //   </div>
-  // )

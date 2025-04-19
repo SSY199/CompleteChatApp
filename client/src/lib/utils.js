@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge"
-import animationData from "../assets/lottie-json";
+import { twMerge } from "tailwind-merge";
+import animationData from '../assets/lottie-json.json' // Correct path to the JSON file
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -23,10 +23,5 @@ export const getColor = (color) => {
 export const animationDefaultOptions = {
   loop: true,
   autoplay: true,
-  animationData: animationData,
-  rendererSettings: {
-    preserveAspectRatio: "xMidYMid slice",
-  },
-  
-}
-
+  animationData: animationData, // Correct JSON file
+};

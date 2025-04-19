@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import Lottie from "react-lottie";
+import Lottie from "lottie-react";
 import { animationDefaultOptions } from "@/lib/utils.js";
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
@@ -25,12 +25,11 @@ import { getColor } from "@/lib/utils.js";
 import { useAppStore } from "@/store/store";
 
 const NewDm = () => {
-  const { selectedChatType, selectedChatData } = useAppStore();
+  const { setSelectedChatType, setSelectedChatData } = useAppStore();
   const [openNewContactModal, setOpenNewContactModal] = useState(false);
   const [searchedContacts, setSearchedContacts] = useState([]);
 
   const searchContact = async (searchTerm) => {
-    console.log("Searching for:", searchTerm);
     try {
       if (searchTerm.length > 0) {
         const response = await apiclient.post(
@@ -39,7 +38,6 @@ const NewDm = () => {
           { withCredentials: true }
         );
 
-        console.log("Search response:", response.data.contacts);
         if (response.data.contacts) {
           setSearchedContacts(response.data.contacts);
         }
@@ -52,12 +50,11 @@ const NewDm = () => {
   };
 
   const selectNewContact = (contact) => {
-    console.log("Selected contact:", contact);
-    // Handle the selection of the new contact here
-    // For example, you can close the modal and update the chat list
     setOpenNewContactModal(false);
+    setSelectedChatType("contact");
+    setSelectedChatData(contact);
     setSearchedContacts([]);
-  }
+  };
 
   return (
     <div>
@@ -92,58 +89,60 @@ const NewDm = () => {
               onChange={(e) => searchContact(e.target.value)}
             />
           </div>
-          <ScrollArea className="h-[250px] w-full rounded-md border-none bg-[#181920]">
-            <div className="flex flex-col gap-5">
-              {searchedContacts.map((contact) => (
-                <div
-                  className="flex gap-3 items-center cursor-pointer"
-                  key={contact._id}
-                  onClick={() => selectNewContact(contact)}
-                >
-                  <div className="w-12 h-12 md:w-16 md:h-16 relative">
-                    <Avatar className="h-12 w-12 rounded-full overflow-hidden mt-2">
-                      {contact.image ? (
-                        <AvatarImage
-                          src={`${HOST}/${contact.image}`} // Ensure this uses the updated contact
-                          alt="profile"
-                          className="object-cover h-full w-full bg-black"
-                          aria-label="User Profile Image"
-                        />
-                      ) : (
-                        <div
-                          className={`uppercase h-full w-full font-bold text-lg border flex items-center justify-center rounded-full ${getColor(
-                            contact.color
-                          )}`}
-                          aria-label="User Initial"
-                        >
-                          {contact.firstname?.charAt(0) ||
-                            contact.email?.charAt(0)}
-                        </div>
-                      )}
-                    </Avatar>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                     <span>
-                      {contact.firstname && contact.lastname
-                        ? `${contact.firstname} ${contact.lastname}`
-                        :contact.email}
-                     </span>
-                    <span className="text-xs">{contact.email}</span>
+          {searchedContacts.length > 0 && (
+            <ScrollArea className="h-[250px] w-full rounded-md border-none bg-[#181920]">
+              <div className="flex flex-col gap-5">
+                {searchedContacts.map((contact) => (
+                  <div
+                    className="flex gap-3 items-center cursor-pointer"
+                    key={contact._id}
+                    onClick={() => selectNewContact(contact)}
+                  >
+                    <div className="w-12 h-12 md:w-16 md:h-16 relative">
+                      <Avatar className="h-12 w-12 rounded-full overflow-hidden mt-2">
+                        {contact.image ? (
+                          <AvatarImage
+                            src={`${HOST}/${contact.image}`}
+                            alt="profile"
+                            className="object-cover h-full w-full bg-black rounded-full"
+                            aria-label="User Profile Image"
+                          />
+                        ) : (
+                          <div
+                            className={`uppercase h-full w-full font-bold text-lg border flex items-center justify-center rounded-full ${getColor(
+                              contact.color
+                            )}`}
+                            aria-label="User Initial"
+                          >
+                            {contact.firstname?.charAt(0) ||
+                              contact.email?.charAt(0)}
+                          </div>
+                        )}
+                      </Avatar>
                     </div>
-                </div>
-              ))}
-            </div>
-          </ScrollArea>
-          {searchedContacts.length == 0 && (
+                    <div className="flex flex-col gap-1">
+                      <span>
+                        {contact.firstname && contact.lastname
+                          ? `${contact.firstname} ${contact.lastname}`
+                          : contact.email}
+                      </span>
+                      <span className="text-xs">{contact.email}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
+          )}
+
+          {searchedContacts.length === 0 && (
             <div
               className="flex-1 flex flex-col justify-center items-center bg-[#181920] text-opacity-80 text-white transition-all duration-300"
               aria-label="Empty Container"
             >
               <Lottie
-                isClickToPauseDisabled={true}
-                options={animationDefaultOptions}
-                height={150}
-                width={150}
+                animationData={animationDefaultOptions.animationData}
+                loop={animationDefaultOptions.loop}
+                style={{ height: 150, width: 150 }}
               />
               <div className="flex flex-col gap-2 items-center justify-center mt-5 lg:text-2xl text-xl text-center">
                 <h2 className="poppins-medium">

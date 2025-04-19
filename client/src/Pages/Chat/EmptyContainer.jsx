@@ -1,7 +1,6 @@
 import { animationDefaultOptions } from "@/lib/utils.js";
 import React, { memo } from "react";
-import Lottie from "react-lottie";
-// import animationData from '../../assets/lottie/empty.json';
+import Lottie from "lottie-react";
 
 const EmptyContainer = () => {
   return (
@@ -9,7 +8,11 @@ const EmptyContainer = () => {
       className="flex-1 md:bg-[#1c1d25] md:flex flex-col justify-center items-center hidden duration-1000 transition-all"
       aria-label="Empty Container"
     >
-      <Lottie isClickToPauseDisabled={true} options={animationDefaultOptions} height={200} width={200} />
+      <Lottie
+        animationData={animationDefaultOptions.animationData} // Pass animationData directly
+        loop={animationDefaultOptions.loop} // Enable looping
+        style={{ height: 200, width: 200 }} // Set height and width
+      />
       <div className="text-opacity-80 text-white flex flex-col gap-5 items-center justify-center mt-10 lg:text-4xl text-3xl transition-all duration-300 text-center">
         <h2 className="poppins-medium">
           Hi<span className="text-purple-500">!</span> Welcome to Synchronous

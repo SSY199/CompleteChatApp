@@ -13,8 +13,8 @@ export const getContacts = async (req, res) => {
     const sanitizedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // Escape special characters
     const regex = new RegExp(sanitizedSearchTerm, "i"); // Case-insensitive search
 
-    console.log("Search Term:", searchTerm);
-    console.log("Regex:", regex);
+    //console.log("Search Term:", searchTerm);
+    //console.log("Regex:", regex);
 
     const contacts = await User.find({
       $and: [
@@ -29,7 +29,7 @@ export const getContacts = async (req, res) => {
       ],
     });
 
-    console.log("Contacts Found:", contacts);
+    //console.log("Contacts Found:", contacts);
 
     return res.status(200).json({ contacts });
   } catch (error) {
