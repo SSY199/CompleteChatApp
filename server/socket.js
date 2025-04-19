@@ -29,16 +29,16 @@ const setupSocket = (server) => {
     const createdMessage = await Message.create(message);
 
     const messageData = await Message.findById(createdMessage.id)
-      .populate("sender", "id email firstName lastName image color")
-      .populate("receiver", "id email firstName lastName image color");
+      .populate("sender", "_id email firstName lastName image color") // Ensure _id is included
+      .populate("receiver", "_id email firstName lastName image color"); // Ensure _id is included
 
-      if(receiverSocketId) {
-        io.to(receiverSocketId).emit("receiveMessage", messageData);
-      }
-      if(senderSocketId) {
-        io.to(senderSocketId).emit("receiveMessage", messageData);
-      }
-  }
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("receiveMessage", messageData);
+    }
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("receiveMessage", messageData);
+    }
+  };
 
   io.on("connection", (socket) => {
     const userId = socket.handshake.auth.userId;

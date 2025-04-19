@@ -19,37 +19,37 @@ export const SocketProvider = ({ children }) => {
   const { userInfo } = useAppStore();
 
   useEffect(() => {
-    if (userInfo && userInfo.id) { // Ensure userInfo.id exists
+    if (userInfo && userInfo.id) {
+      // Ensure userInfo.id exists
       console.log("Connecting socket with userId:", userInfo.id); // Debug log
       socketRef.current = io(HOST, {
         transports: ["websocket"],
         auth: { userId: userInfo.id }, // Pass only the id
         withCredentials: true,
       });
-  
+
       socketRef.current.on("connect", () => {
         console.log("Socket connected:", socketRef.current.id);
       });
 
       const handleReceiveMessage = (message) => {
-  console.log("Received message:", message);
-  const { selectedChatData, selectedChatType, addMessage } = useAppStore.getState();
-
-  const senderId = message.sender?.id || message.sender?._id;
-  const receiverId = message.receiver?.id || message.receiver?._id;
-
-  if (
-    selectedChatType !== undefined &&
-    (selectedChatData?.id === senderId || selectedChatData?.id === receiverId)
-  ) {
-    console.log("Adding message to chat:", message);
-    addMessage(message);
-  }
-};
-
+        const { selectedChatData, selectedChatType, addMessage } = useAppStore.getState();
+      
+        const senderId = message.sender?._id;
+        const receiverId = message.receiver?._id;
+      
+        if (
+          selectedChatType !== undefined &&
+          (selectedChatData?.id === senderId || selectedChatData?.id === receiverId)
+        ) {
+          addMessage(message);
+          console.log("Message received:", message); // Debug log
+        }
+      };
+      
 
       socketRef.current.on("receiveMessage", handleReceiveMessage);
-  
+
       return () => {
         socketRef.current.disconnect();
         console.log("Socket disconnected");

@@ -31,13 +31,13 @@ const MessageBar = () => {
   };
   
 
-  const handleSendMessage = async() => {
+  const handleSendMessage = async () => {
     console.log("Message sent:", message);
-    if(selectedChatType === "contact"){
+    if (selectedChatType === "contact") {
       socket.emit("sendMessage", {
-        sender: userInfo.id,
+        sender: userInfo.id, // Use id from userInfo
         content: message,
-        receiver: selectedChatData.id,
+        receiver: selectedChatData.id, // Use id from selectedChatData
         messageType: "text",
         fileUrl: undefined,
       });

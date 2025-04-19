@@ -52,7 +52,7 @@ const NewDm = () => {
   const selectNewContact = (contact) => {
     setOpenNewContactModal(false);
     setSelectedChatType("contact");
-    setSelectedChatData(contact);
+    setSelectedChatData({ ...contact, id: contact._id }); // Map _id to id for consistency
     setSearchedContacts([]);
   };
 
